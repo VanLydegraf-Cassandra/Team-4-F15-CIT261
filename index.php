@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AJAX Example: Wildlife Tracker | CIT-261 Understanding Portfolio - Eurico Costa</title>
+        <title>Eagles Sighting Tracker | CIT-261 Team 4</title>
         <meta name="author" content="Eurico Costa">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This website provides a high level overview of my understanding of the topics learned in CIT-261 Fall Semester 2015.">
@@ -10,11 +10,16 @@
         <link rel="stylesheet" type="text/css" media="screen" href="css/master.css" />
         
         <script>
-            //Location Coordinates
+            //Location Coordinates Global Variables
             /*********************************/
             var sLatitude, sLongitude;
             /*********************************/
             
+            
+            //Used to initiate the embedded google map. 
+            //TODO: This will have to be changed to using the google map javascript 
+            //API instead since this solution is going to more complex than just placing one single 
+            //point on the map (Eurico).
             function initMap(lat,long) {
                 var zoom = 13;
                 var divMap = document.getElementById("map");
@@ -113,6 +118,8 @@
                 return currentISOTimestampString;
             }
             
+            //Sets the sighting entry form to visible, sets default values
+            //and kicks the call for coordinates.
             function setNewSighting(){
                 //show sighting form
                 var sd = document.getElementById("divNewSighting");
@@ -124,6 +131,7 @@
                 document.getElementById('when').value = getLocalTimestamp();
             }
             
+            //Clears all rows from the sightings table
             function clearAllRows(){
                 var table = document.getElementById('sightingsTable');
                 var tableRows = table.getElementsByTagName('tr');
@@ -134,6 +142,9 @@
                 }
             }
             
+            //loads the list of sightings in the local storage
+            //TODO: Needs to changed to use the google maps javascript
+            //API to set the sighting points on the map (Eurico).
             function loadSightingsList(){
                 var key;
                 var description = "<p>List of Sightings</p>";
@@ -178,7 +189,7 @@
                 }
             }
             
-                        
+            //Saves a new sighting on the browser's local storage        
             function saveSighting(){
                 var sWildlifeSighted = document.getElementById("wildlifeSighted").value;
                 var sLocation = document.getElementById("sightingLocation").value;
@@ -213,6 +224,10 @@
                 divNewSighting.style.display = 'none';
             }
             
+            //Add method to delete a selected sighting from the map (Eurico)
+            function deleteSighting(){
+            }
+            
             //used to create an overlay while ajax is running
             function toggleOverlay(){
                 var overlay = document.getElementById('overlay');
@@ -225,6 +240,9 @@
                 }
             }
             
+            //If mobile, touch events will be used instead, so, using DOM to 
+            //remove the onclick standar event and leave the ontouchstart even
+            //in place instead.
             function removeMobileOnclick() {
                 if(isMobile()) {
                     document.getElementById('btnNewSighting').onclick = '';
@@ -232,6 +250,9 @@
                 }
             }
 
+            //Used to check if the browser version is mobile or desktop
+            //so it can be determined if touch specific events can be used
+            //or not.
             function isMobile() {
                 if (navigator.userAgent.match(/Android/i)
                         || navigator.userAgent.match(/iPhone/i)
@@ -245,7 +266,7 @@
                     return true;
                 }
             }
-            //window.addEventListener('load', removeMobileOnclick);
+            
             window.onload = function(){
                 removeMobileOnclick();
             }
