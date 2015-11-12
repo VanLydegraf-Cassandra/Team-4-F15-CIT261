@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Eagles Sighting Tracker | CIT-261 Team 4</title>
+        <title>Eagle Sighting Tracker | CIT-261 Team 4</title>
         <meta name="author" content="Eurico Costa">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This website provides a high level overview of my understanding of the topics learned in CIT-261 Fall Semester 2015.">
@@ -282,7 +282,7 @@
 
             <main role="main" id="page-main"> <!-- there can only be one main element in the page -->
                 <article id="page-article">
-                    <h1>Eagle Sightings Tracker</h1>
+                    <h1>Eagle Sighting Tracker</h1>
                     
                     <p>Note: This app is not supported on the desktop version of Safari due to incompatibilities with the geolocation APIs, but it supported 
                         on all other browsers, including safari mobile.</p>
