@@ -10,7 +10,7 @@
 <div>
     <div class="logo">
         <a href="/CIT-261-PersonalPortfolio/" title="CIT-261 Fall Semester 2015 - Understanding Porfolio">
-            <h1>Eagle sightings Tracker</h1>
+            <h1>Eagle Sighting Tracker</h1>
             <h2>
                 Team 4 - Group Project<br>
                 CIT-261 Fall Semester 2015</h2>
