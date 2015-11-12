@@ -21,7 +21,7 @@
             //API instead since this solution is going to more complex than just placing one single 
             //point on the map (Eurico).
             function initMap(lat,long) {
-                var zoom = 13;
+                var zoom = 13; //will need to validate this zoom value because now there's the potential to have a wider map since all the sightings are going to be shown on the map.
                 var divMap = document.getElementById("map");
                 
                 //dev goople maps api url (no key information)
