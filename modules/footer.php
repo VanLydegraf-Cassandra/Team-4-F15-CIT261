@@ -10,7 +10,7 @@
 <div> 
     <div class="barcopy">
        <div class="bar-wrapcopy">
-           <div class="copyright">This content is in the public domain. Please give credit to <a href="mailto:ejcosta@gmail.com">me</a> if you use it.</div>
+           <div class="copyright">This content is in the public domain. Please give appropriate credit if you use it.</div>
             <div class="copyright">Last Updated: 18 October, 2015</div>
        </div>
     </div>
