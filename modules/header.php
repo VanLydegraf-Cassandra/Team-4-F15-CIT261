@@ -14,7 +14,6 @@
             <h2>
                 Team 4 - Group Project<br>
                 CIT-261 Fall Semester 2015</h2>
-            <hr>
         </a>
     </div>
 </div>
