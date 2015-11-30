@@ -101,6 +101,107 @@
                 google.maps.event.trigger(currentMap, "resize");
                 currentMap.setCenter(center); 
             });
+            
+            function getLocalTimestamp(){
+                //set default timestamp - accounts for timezone offset.
+                var currentTimestamp = new Date();
+                // Find the current time zone's offset in milliseconds.
+                var timezoneOffset = currentTimestamp.getTimezoneOffset() * 60 * 1000;
+
+                // Subtract the time zone offset from the current UTC date, and pass
+                //  that into the Date constructor to get a date whose UTC date/time is
+                //  adjusted by timezoneOffset for display purposes.
+                var localTimestamp = new Date(currentTimestamp.getTime() - timezoneOffset);
+                var currentISOTimestampString = localTimestamp.toISOString().replace('Z', '');
+                
+                return currentISOTimestampString;
+            }
+            
+            //loads the list of sightings in the local storage
+            //TODO: Needs to changed to use the google maps javascript
+            //API to set the sighting points on the map (Eurico).
+            function loadSightingsList(){
+                var key;
+                var description = "<p>List of Sightings</p>";
+                var countSightings = 0;
+                var table = document.getElementById("sightingsTable");
+                var json;
+                
+                //clear table
+                clearAllRows();
+                
+                for(var i in localStorage){
+                    var str = i.split("|");
+                    
+                    if(str[0] == "Sighting"){
+                        json = JSON.parse(localStorage.getItem(i));
+                        
+                        var newRow = table.insertRow(-1);
+
+                        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                        var cell1 = newRow.insertCell(0);
+                        var cell2 = newRow.insertCell(1);
+                        var cell3 = newRow.insertCell(2);
+
+                        // Add some text to the new cells:
+                        cell1.innerHTML = json.Date;
+                        cell2.innerHTML = json.WildlifeSighted;
+                        cell3.innerHTML = json.Location; 
+                        countSightings++;
+                    }
+                }
+                
+                if(countSightings == 0){
+                    var newRow = table.insertRow(-1);
+
+                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                    var cell1 = newRow.insertCell(0);
+                    var cell2 = newRow.insertCell(1);
+                    var cell3 = newRow.insertCell(2);
+
+                    // Add some text to the new cells:
+                    cell1.innerHTML = "No data to display";
+                }
+            }
+            
+            //Saves a new sighting on the browser's local storage        
+            function saveSighting(){
+                var sWildlifeSighted = document.getElementById("wildlifeSighted").value;
+                var sLocation = document.getElementById("sightingLocation").value;
+                var dDate = document.getElementById("when").value;
+                
+                var sJson = JSON.stringify({ WildlifeSighted : sWildlifeSighted, 
+                    Location : sLocation, 
+                    Date : dDate, 
+                    Latitude: sLatitude, 
+                    Longitude: sLongitude
+                });
+                    
+                //save to local storage
+                var key = 'Sighting' + '|' + sWildlifeSighted + '|' + dDate;
+                localStorage.setItem(key, sJson);
+                window.alert("Your sighting was successfuly saved.");
+                
+                //Add row to table
+                var table = document.getElementById("sightingsTable");
+                var newRow = table.insertRow(-1);
+
+                // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+
+                // Add some text to the new cells:
+                cell1.innerHTML = dDate;
+                cell2.innerHTML = sWildlifeSighted;
+                cell3.innerHTML = sLocation; 
+                
+                divNewSighting.style.display = 'none';
+            }
+            
+            //Add method to delete a selected sighting from the map (Eurico)
+            function deleteSighting(){
+            }
         </script>
     </head>
     <body>
