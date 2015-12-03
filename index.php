@@ -26,19 +26,20 @@
             /*********************************/
             var sLatitude, sLongitude;
             var currentMap;
+            var currentPosition;
+            var markersArray;
             /*********************************/
             
             window.addEventListener('load', function() {
-                toggleOverlay();
-                // get json data - going to call AJAX
-                //loadData();
+                //toggleOverlay();
 
                 // getting current location by geocoder
-                var getGeoLocation = new google.maps.Geocoder();
-                var currentPosition;
+                //var getGeoLocation = new google.maps.Geocoder();
 
                 if(navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
+                        sLatitude = position.coords.latitude;
+                        sLongitude = position.coords.longitude;
                         currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); 
                         initialize(currentPosition);
                     }, function() {
@@ -48,14 +49,10 @@
                 else {
                     handleError(200);
                 }
-                // other tasks omitted
                  
-                // display content
-                //document.getElementById("startup").style.display = "none";
-                //document.getElementById("siteContent").style.display = "inline";
-                toggleOverlay();
                 google.maps.event.trigger(currentMap, 'resize');
-                currentMap.setCenter(location);
+                currentMap.setCenter(currentPosition);
+                //toggleOverlay();
             });
             
             function handleError(error){
@@ -74,6 +71,7 @@
                 }
             }
             
+            //function to initialize the map
             function initialize(location) {
                 var mapOptions = {
                     zoom : 13,
@@ -85,14 +83,32 @@
                     mapTypeId : google.maps.MapTypeId.ROADMAP
                 };
                 currentMap = new google.maps.Map(document.getElementById("map"), mapOptions);
-                // current position
+                
+                // current position marker
                 var mapMarker = new google.maps.Marker({
                     position : location,
+                    icon : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                    animation: google.maps.Animation.DROP,
                     map : currentMap,
-                    zIndex : 255
+                    draggable : true,
+                    title : "Current Position",
+                    zIndex : 255,
                 });
+                
+                //load existing sightings
+                loadSightingsToMap();
+                
+                //zoom to bounds
+                var bounds = new google.maps.LatLngBounds();
+                    
+                for(i=0;i<markersArray.length;i++) {
+                    bounds.extend(markersArray[i].getPosition());
+                }
+
+                currentMap.fitBounds(bounds);
             }
             
+            //map initialize event listener
             google.maps.event.addDomListener(window, 'load', initialize);
             
             //map resize event listener
@@ -117,50 +133,36 @@
                 return currentISOTimestampString;
             }
             
-            //loads the list of sightings in the local storage
-            //TODO: Needs to changed to use the google maps javascript
-            //API to set the sighting points on the map (Eurico).
-            function loadSightingsList(){
-                var key;
-                var description = "<p>List of Sightings</p>";
-                var countSightings = 0;
-                var table = document.getElementById("sightingsTable");
+            //load all the sightings onto the map
+            function loadSightingsToMap(){
                 var json;
+                var marker;
+                var oLatLong;
                 
-                //clear table
-                clearAllRows();
+                markersArray = new Array();
                 
                 for(var i in localStorage){
                     var str = i.split("|");
                     
                     if(str[0] == "Sighting"){
                         json = JSON.parse(localStorage.getItem(i));
+                        oLatLong = new google.maps.LatLng(json.Latitude, json.Longitude);
                         
-                        var newRow = table.insertRow(-1);
-
-                        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-                        var cell1 = newRow.insertCell(0);
-                        var cell2 = newRow.insertCell(1);
-                        var cell3 = newRow.insertCell(2);
-
-                        // Add some text to the new cells:
-                        cell1.innerHTML = json.Date;
-                        cell2.innerHTML = json.WildlifeSighted;
-                        cell3.innerHTML = json.Location; 
-                        countSightings++;
+                        marker = new google.maps.Marker({
+                            position: oLatLong,
+                            icon : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                            animation: google.maps.Animation.DROP,
+                            map : currentMap,
+                            zIndex : 255,
+                            draggable : false,
+                            sighting : "Sighted: " + json.WildlifeSighted + " on " + json.Date,
+                            timeStamp : json.Date,
+                            title : "Sighted: " + json.WildlifeSighted + " on " + json.Date,
+                            id : i,
+                        })
+                        
+                        markersArray.push(marker);
                     }
-                }
-                
-                if(countSightings == 0){
-                    var newRow = table.insertRow(-1);
-
-                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-                    var cell1 = newRow.insertCell(0);
-                    var cell2 = newRow.insertCell(1);
-                    var cell3 = newRow.insertCell(2);
-
-                    // Add some text to the new cells:
-                    cell1.innerHTML = "No data to display";
                 }
             }
             
@@ -170,11 +172,12 @@
                 var sLocation = document.getElementById("sightingLocation").value;
                 var dDate = document.getElementById("when").value;
                 
-                var sJson = JSON.stringify({ WildlifeSighted : sWildlifeSighted, 
-                    Location : sLocation, 
-                    Date : dDate, 
-                    Latitude: sLatitude, 
-                    Longitude: sLongitude
+                var sJson = JSON.stringify({ 
+                        WildlifeSighted : sWildlifeSighted, 
+                        Location : sLocation, 
+                        Date : dDate, 
+                        Latitude: sLatitude,
+                        Longitude: sLongitude
                 });
                     
                 //save to local storage
@@ -182,25 +185,16 @@
                 localStorage.setItem(key, sJson);
                 window.alert("Your sighting was successfuly saved.");
                 
-                //Add row to table
-                var table = document.getElementById("sightingsTable");
-                var newRow = table.insertRow(-1);
-
-                // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-                var cell1 = newRow.insertCell(0);
-                var cell2 = newRow.insertCell(1);
-                var cell3 = newRow.insertCell(2);
-
-                // Add some text to the new cells:
-                cell1.innerHTML = dDate;
-                cell2.innerHTML = sWildlifeSighted;
-                cell3.innerHTML = sLocation; 
+                //Add sighting to map
+                // current position
+                var mapMarker = new google.maps.Marker({
+                    position : currentPosition,
+                    map : currentMap,
+                    zIndex : 255
+                });
                 
+                //hide the form
                 divNewSighting.style.display = 'none';
-            }
-            
-            //Add method to delete a selected sighting from the map (Eurico)
-            function deleteSighting(){
             }
         </script>
     </head>
