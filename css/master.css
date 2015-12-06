@@ -8,8 +8,8 @@ and open the template in the editor.
     Author     : eucosta
 */
 
-@import("normalize.css");
-@import url(http://weloveiconfonts.com/api/?family=zocial);
+//@import("normalize.css");
+//@import url(http://weloveiconfonts.com/api/?family=zocial);
 
 *{
     -moz-box-sizing: border-box;
@@ -23,11 +23,13 @@ html,body{
 
 body{
     margin: 0 auto;
+    width: 50em;
     float: none;
     word-wrap:break-word !important;
     font-family: helvetica;
     font-size: 15px;
-    max-width: 100%;
+    max-width: 80%;
+    min-width: 320px;
     padding: 0;
     background-color: #fff;
     color: #000;
@@ -35,7 +37,6 @@ body{
 
 header, section, footer, aside, nav, article, figure, figcaption{
     display: block;
-    padding: 10px;
 }
 
 .center{
@@ -498,4 +499,49 @@ div#overlay {
          -moz-transform: rotateY( 320deg ) translateZ( 288px );
            -o-transform: rotateY( 320deg ) translateZ( 288px );
               transform: rotateY( 320deg ) translateZ( 288px );
+    }
+    
+    #display {
+    border-radius: 30px;
+    width: 0px;
+    height: 0px;
+    position: relative;
+    background-color: #AF802E;
+    color: white;
+    opacity:0;
+    top: 0px;
+    left: 300px;
+    transition-property: opacity, top, left, width, height;
+    transition: all 2s 9999999s;
+    }
+    #description{
+    width:100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    /* Firefox */
+    display:-moz-box;
+    -moz-box-pack:center;
+    -moz-box-align:center;
+
+    /* Safari and Chrome */
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+    /* W3C */
+    display:box;
+    box-pack:center;
+    box-align:center;
+    }
+    #date{
+    float: left;
+    margin: 0% 0% 0% 10%;
+    }
+    #location{
+    float: right;
+    margin: 0% 10% 0% 0%;
+    }
+    span{
+    font-size: 50%;
     }
