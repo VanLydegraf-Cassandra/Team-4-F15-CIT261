@@ -9,17 +9,6 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="css/master.css" />
         
-        <style>
-          html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
-          #map {
-            height: 100%;
-          }
-        </style>
-        
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjmSgcVOnH9Vk5O2ovkZRJayNGX2uFD70"></script>
         <script>
             //Location Coordinates and google maps Global Variables
