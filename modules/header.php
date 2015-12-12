@@ -7,13 +7,13 @@
  */
 ?>
 
-<div>
+<div id="header">
     <div class="logo" style="padding-left: 10px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
-            <h1>Eagle Sighting Tracker</h1>
-            <h2>
-                Team 4 - Group Project<br>
-                CIT-261 Fall Semester 2015</h2>
+            <img src="../images/bald-eagle-logo-lg.png" alt=""/>
         </a>
+    </div>
+    <div id="sightingButton" style="padding-left: 10px">
+        <button id="modal_open">Record a New Sighting</button>
     </div>
 </div>

@@ -16,23 +16,20 @@
             </header>
         </div>
         <!-- #modal_wrapper -->
-        <div id="sightingButton" style="padding-left: 10px">
-            <p><button id="modal_open">Record a New Sighting</button></p>
-        </div>
 
         <div id="modal_wrapper">
             <div id="modal_window">
                 <div style="text-align: right;"><a id="modal_close" href="#">close <b>X</b></a></div>
 
-                <p>Complete the form below to record a sighting:</p>
-
+                <p>Complete the form below to record a new sighting:</p>
+                <hr>
                 <p>
-                    <label>Sighted Wildlife<strong>*</strong><br>
+                    <label>Animal<br>
                         <input type="text" autofocus required size="48" id="wildlifeSighted" name="wildlifeSighted">
                     </label>
                 </p>
                 <p>
-                    <label>Location<strong>*</strong><br>
+                    <label>Location<br>
                         <input type="text" required title="Your location may be computed automatically for you." size="48" id="sightingLocation" name="sightingLocation">
                     </label>
                 </p>
@@ -43,11 +40,11 @@
                 </p>
                 <p>
                     <label>Observation Notes<strong>*</strong><br>
-                        <textarea required name="observationNotes" cols="48" rows="8"></textarea>
+                        <textarea required id="observationNotes" name="observationNotes"  cols="48" rows="8"></textarea>
                     </label>
                 </p>
                 <p>
-                    <button id="btnSaveSighting" class="btn btn-6 btn-6b" type="button" ontouchstart="saveSighting();" onclick="saveSighting();">Save Sighting</button>
+                    <button id="btnSaveSighting" class="btn btn-6 btn-6b" type="button" ontouchstart="" onclick="">Save Sighting</button>
                 </p>
             </div> <!-- #modal_window -->
         </div> 

@@ -90,7 +90,7 @@ function resetBounds(){
 //function to initialize the map
 function initialize(myLocation) {
     var mapOptions = {
-        zoom: 13,
+        zoom: 17,
         center : myLocation,
         zoomControl: false,
         scaleControl: true,
@@ -104,7 +104,7 @@ function initialize(myLocation) {
         icon : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
         animation: google.maps.Animation.DROP,
         map : currentMap,
-        draggable : false,
+        draggable : true,
         title : "Current Position",
         zIndex : 255,
     });
@@ -140,6 +140,8 @@ function loadSightingsToMap(){
     var json;
     var marker;
     var oLatLong;
+    var content;
+    var infowindow = new google.maps.InfoWindow();
 
     for(var i in localStorage){
         var str = i.split("|");
@@ -150,34 +152,56 @@ function loadSightingsToMap(){
 
             marker = new google.maps.Marker({
                 position: oLatLong,
-                icon : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                icon : "/images/animals.png",
                 animation: google.maps.Animation.DROP,
                 map : currentMap,
-                zIndex : 255,
+                zIndex : -99,
                 draggable : false,
-                sighting : "Sighted: " + json.WildlifeSighted + " on " + json.Date,
+                sighting : "Sighted: " + json.WildlifeSighted,
                 timeStamp : json.Date,
                 title : "Sighted: " + json.WildlifeSighted + " on " + json.Date,
+                observationNotes : json.Notes,
+                location: json.Location,
                 id : i,
             })
-
+            
+            content = "<strong>" + json.WildlifeSighted + ", on " + json.Date + "</strong><br><br>" 
+                           + "Location: " + json.Location + " (lat: " + json.Latitude + ", long: " + json.Longitude + "<br><br>"
+                           + "Observation Notes: " + json.Notes;
+  
+            google.maps.event.addListener(marker, 'click', (function(marker,content){
+                    return function() {
+                        infowindow.setContent(content);
+                        infowindow.open(currentMap, marker);
+                    };
+                })(marker,content));
+                
             markersArray.push(marker);
         }
     }
 }
+
+//because the markers can't stay on top of each other otherwise they will not be seens
+//we need to apply a small offset to the location to allow them to be seen
+//min and max limits for multiplier, for random numbers
+//keep the range pretty small, so markers are kept close by
+var min = .999999;
+var max = 1.000001;
 
 //Saves a new sighting on the browser's local storage        
 function saveSighting(){
     var sWildlifeSighted = wildlifeSighted.value;
     var sLocation = document.getElementById("sightingLocation").value;
     var dDate = document.getElementById("when").value;
+    var sNotes = document.getElementById("observationNotes").value;
 
     var sJson = JSON.stringify({ 
             WildlifeSighted : sWildlifeSighted, 
             Location : sLocation, 
             Date : dDate, 
-            Latitude: sLatitude,
-            Longitude: sLongitude
+            Notes : sNotes,
+            Latitude: sLatitude * (Math.random() * (max - min) + min),
+            Longitude: sLongitude * (Math.random() * (max - min) + min)
     });
 
     //save to local storage
@@ -189,6 +213,7 @@ function saveSighting(){
     // current position
     var mapMarker = new google.maps.Marker({
         position : currentPosition,
+        icon : "/images/animals.png",
         map : currentMap,
         zIndex : 255
     });
@@ -266,13 +291,6 @@ var modal_init = function() {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
 
-//    var clickHandler = function(e) {
-//      if(!e.target) e.target = e.srcElement;
-//      if(e.target.tagName == "DIV") {
-//        if(e.target.id != "modal_window") closeModal(e);
-//      }
-//    };
-
     var keyHandler = function(e) {
       if(e.keyCode == 27) closeModal(e);
     };
@@ -280,12 +298,11 @@ var modal_init = function() {
     if(document.addEventListener) {
       document.getElementById("modal_open").addEventListener("click", openModal, false);
       document.getElementById("btnSaveSighting").addEventListener("click", closeModal, false);
-      //document.addEventListener("click", clickHandler, false);
+      document.getElementById("btnSaveSighting").addEventListener("ontouchstart", closeModal, false);
       document.addEventListener("keydown", keyHandler, false);
     } else {
       document.getElementById("modal_open").attachEvent("onclick", openModal);
       document.getElementById("btnSaveSighting").attachEvent("onclick", closeModal);
-      document.attachEvent("onclick", clickHandler);
       document.attachEvent("onkeydown", keyHandler);
     }
 };

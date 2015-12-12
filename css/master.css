@@ -33,8 +33,13 @@ body{
     color: #000;
 }
 
+#header{
+    background: url("/images/header_bg.png") repeat-x;
+}
+
 header, section, footer, aside, nav, article, figure, figcaption{
     display: block;
+    
 }
 
 #map { 
