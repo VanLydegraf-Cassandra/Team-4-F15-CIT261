@@ -28,17 +28,17 @@
 
                 <p>
                     <label>Sighted Wildlife<strong>*</strong><br>
-                        <input type="text" autofocus required size="48" name="wildlifeSighted" value="">
+                        <input type="text" autofocus required size="48" id="wildlifeSighted" name="wildlifeSighted">
                     </label>
                 </p>
                 <p>
                     <label>Location<strong>*</strong><br>
-                        <input type="text" required title="Your location may be computed automatically for you." size="48" name="sightingLocation" value="">
+                        <input type="text" required title="Your location may be computed automatically for you." size="48" id="sightingLocation" name="sightingLocation">
                     </label>
                 </p>
                 <p>
                     <label>When<br>
-                        <input type="datetime-local" size="48" name="when" value="">
+                        <input type="datetime-local" size="48" name="when" id="when">
                     </label>
                 </p>
                 <p>
@@ -52,7 +52,7 @@
             </div> <!-- #modal_window -->
         </div> 
         <!-- #modal_wrapper -->
-        <div id="map"></div>
+        <div id="map" style="padding: 10px"></div>
         <div id="display" onclick="setTransition(true)">
             <span id="description"></span>
             <span id="date"></span>

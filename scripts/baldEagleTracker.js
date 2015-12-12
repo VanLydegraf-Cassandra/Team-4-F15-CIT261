@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+/* global google */
+
 //Location Coordinates and google maps Global Variables
 /*********************************/
 var sLatitude, sLongitude;
@@ -14,30 +16,64 @@ var markersArray;
 
 window.addEventListener('load', function() {
     markersArray = new Array();
+    modal_init();
 
     // getting current location by geocoder
     //var getGeoLocation = new google.maps.Geocoder();
+    try{
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              sLatitude = position.coords.latitude;
+              sLongitude = position.coords.longitude;
+              currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); 
+              
+              //ajax call to get current location name
+              //AJAX call to geolocation service to get location name from coordinates      
+                    var url = "http://api.wunderground.com/api/22b4347c464f868e/geolookup/q/" + sLatitude + "," + sLongitude + ".json";
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (xhttp.readyState == 4 && xhttp.status == 200) {
+                            //process location
+                            try{
+                                var json = JSON.parse(xhttp.responseText);
+                                var city = json.location.city;
+                                var state = json.location.state;
+                                var country = json.location.country
+                                var location = city + ", " + state + ", " + country;
+                                document.getElementById("sightingLocation").value = location;
+                            }
+                            catch(e){
+                                //invalid JSON
+                            }  
+                        }
+                    }
 
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            sLatitude = position.coords.latitude;
-            sLongitude = position.coords.longitude;
-            currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); 
-            initialize(currentPosition);
-        }, function() {
-            handleError(100);
-        });
+                    xhttp.open("GET", url, true);
+                    xhttp.send();
+              //end ajax call
+              
+              initialize(currentPosition);
+              google.maps.event.trigger(currentMap, 'resize');
+              currentMap.setCenter(currentPosition);
+              //load existing sightings
+              markersArray.push(currentPosition);
+              loadSightingsToMap();
+              resetBounds();
+          }, function() {
+              handleError(100);
+          });
+      }
+      else {
+          handleError(200);
+      }
     }
-    else {
-        handleError(200);
+    catch(e){
+        console.log(e.message);
     }
-
-    google.maps.event.trigger(currentMap, 'resize');
-    currentMap.setCenter(currentPosition);
-    window.attachEvent("onload", modal_init);
 });
 
 function handleError(error){
+    window.alert("The Map could not be initialized due to error code: " + error);
 }
 
 function resetBounds(){
@@ -72,11 +108,6 @@ function initialize(myLocation) {
         title : "Current Position",
         zIndex : 255,
     });
-
-    //load existing sightings
-    markersArray.push(currentPosition);
-    loadSightingsToMap();
-    resetBounds();
 }
 
 //map initialize event listener
@@ -137,7 +168,7 @@ function loadSightingsToMap(){
 
 //Saves a new sighting on the browser's local storage        
 function saveSighting(){
-    var sWildlifeSighted = document.getElementById("wildlifeSighted").value;
+    var sWildlifeSighted = wildlifeSighted.value;
     var sLocation = document.getElementById("sightingLocation").value;
     var dDate = document.getElementById("when").value;
 
@@ -161,13 +192,9 @@ function saveSighting(){
         map : currentMap,
         zIndex : 255
     });
-
-    //hide the form
-    divNewSighting.style.display = 'none';
 }
 
 //Infobox
-
 function setDescription(description) {
     document.getElementById("description").innerHTML = description;
 }
@@ -218,6 +245,10 @@ var modal_init = function() {
 
     var openModal = function(e)
     {
+        //set defaults:
+        document.getElementById('when').value = getLocalTimestamp();
+        
+        
       modalWrapper.className = "overlay";
       var overflow = modalWindow.offsetHeight - document.documentElement.clientHeight;
       if(overflow > 0) {
@@ -230,16 +261,17 @@ var modal_init = function() {
 
     var closeModal = function(e)
     {
+      saveSighting();
       modalWrapper.className = "";
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
 
-    var clickHandler = function(e) {
-      if(!e.target) e.target = e.srcElement;
-      if(e.target.tagName == "DIV") {
-        if(e.target.id != "modal_window") closeModal(e);
-      }
-    };
+//    var clickHandler = function(e) {
+//      if(!e.target) e.target = e.srcElement;
+//      if(e.target.tagName == "DIV") {
+//        if(e.target.id != "modal_window") closeModal(e);
+//      }
+//    };
 
     var keyHandler = function(e) {
       if(e.keyCode == 27) closeModal(e);
@@ -247,12 +279,12 @@ var modal_init = function() {
 
     if(document.addEventListener) {
       document.getElementById("modal_open").addEventListener("click", openModal, false);
-      document.getElementById("modal_close").addEventListener("click", closeModal, false);
-      document.addEventListener("click", clickHandler, false);
+      document.getElementById("btnSaveSighting").addEventListener("click", closeModal, false);
+      //document.addEventListener("click", clickHandler, false);
       document.addEventListener("keydown", keyHandler, false);
     } else {
       document.getElementById("modal_open").attachEvent("onclick", openModal);
-      document.getElementById("modal_close").attachEvent("onclick", closeModal);
+      document.getElementById("btnSaveSighting").attachEvent("onclick", closeModal);
       document.attachEvent("onclick", clickHandler);
       document.attachEvent("onkeydown", keyHandler);
     }
