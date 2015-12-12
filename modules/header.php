@@ -8,7 +8,7 @@
 ?>
 
 <div>
-    <div class="logo">
+    <div class="logo" style="padding-left: 10px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
             <h1>Eagle Sighting Tracker</h1>
             <h2>
