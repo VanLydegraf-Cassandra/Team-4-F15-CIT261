@@ -211,14 +211,20 @@ function saveSighting(){
     var sLocation = document.getElementById("sightingLocation").value;
     var dDate = document.getElementById("when").value;
     var sNotes = document.getElementById("observationNotes").value;
-
+    var content;
+    var infowindow = new google.maps.InfoWindow();
+    var sNewLatitude, sNewLongitude;
+    
+    sNewLatitude = sLatitude * (Math.random() * (max - min) + min);
+    sNewLongitude = sLongitude * (Math.random() * (max - min) + min);
+    
     var sJson = JSON.stringify({ 
             WildlifeSighted : sWildlifeSighted, 
             Location : sLocation, 
             Date : dDate, 
             Notes : sNotes,
-            Latitude: sLatitude * (Math.random() * (max - min) + min),
-            Longitude: sLongitude * (Math.random() * (max - min) + min)
+            Latitude: sNewLatitude,
+            Longitude: sNewLongitude
     });
 
     //save to local storage
@@ -233,8 +239,33 @@ function saveSighting(){
         icon : "/images/animals.png",
         map : currentMap,
         animation : google.maps.Animation.BOUNCE,
-        zIndex : 999
+        zIndex : 999,
+        draggable : false,
+        sighting : "Sighted: " + sWildlifeSighted,
+        timeStamp : dDate,
+        title : "Sighted: " + sWildlifeSighted + " on " + dDate,
+        observationNotes : sNotes,
+        location: sLocation
     });
+    
+    content = "<strong>" + sWildlifeSighted + ", on " + dDate + "</strong><br><br>" 
+                           + "Location: " + sLocation + " (lat: " + sNewLatitude + ", long: " + sNewLongitude + "<br><br>"
+                           + "Observation Notes: " + sNotes;
+  
+    google.maps.event.addListener(mapMarker, 'click', (function(mapMarker,content){
+            return function() {
+                infowindow.setContent(content);
+                infowindow.open(currentMap, mapMarker);
+
+                if (mapMarker.getAnimation() !== null) {
+                    mapMarker.setAnimation(null);
+                } else {
+                    mapMarker.setAnimation(google.maps.Animation.BOUNCE);
+                }         
+            };
+        })(mapMarker,content));
+
+    markersArray.push(mapMarker);
 }
 
 //Infobox
