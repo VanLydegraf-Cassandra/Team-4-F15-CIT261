@@ -9,7 +9,15 @@
 <div id="header">
     <div class="logo" style="padding-left: 10px; padding-top: 8px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
-            <img id="transition" onload="this.style.opacity='1';" src="../images/bald-eagle-logo-lg.png" alt=""/>
+            <img id="transition" onload="this.style.opacity='1';setTransition();" src="../images/bald-eagle-logo-lg.png" alt=""/>
+            <script>
+                function setTransition() {
+                    document.getElementById("transition").style.WebkitTransform = "translateX(-2000px)";
+                    document.getElementById("transition").style.transition = "all 2s"; 
+    
+                    document.getElementById("transition").style.transition = "all 6s"; 
+                }
+            </script>
         </a>
     </div>
     <div id="sightingButton">
