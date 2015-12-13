@@ -7,12 +7,12 @@
 ?>
 
 <div id="header">
-    <div class="logo" style="padding-left: 10px">
+    <div class="logo" style="padding-left: 10px; padding-top: 8px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
             <img src="../images/bald-eagle-logo-lg.png" alt=""/>
         </a>
     </div>
     <div id="sightingButton">
-        <button id="modal_open">Record a New Sighting</button>
+        <button class="btn btn-6 btn-6b" id="modal_open">Record a New Sighting</button>
     </div>
 </div>
