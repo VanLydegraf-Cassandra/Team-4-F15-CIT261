@@ -73,7 +73,7 @@ window.addEventListener('load', function() {
 });
 
 function handleError(error){
-    window.alert("The Map could not be initialized due to error code: " + error);
+    document.getElementById("saveMessage").textContent = "The Map could not be initialized due to error code: " + error;
 }
 
 function resetBounds(){
@@ -207,7 +207,7 @@ function saveSighting(){
     //save to local storage
     var key = 'Sighting' + '|' + sWildlifeSighted + '|' + dDate;
     localStorage.setItem(key, sJson);
-    window.alert("Your sighting was successfuly saved.");
+    document.getElementById("saveMessage").textContent = "Your sighting was successfully saved.";
 
     //Add sighting to map
     // current position
@@ -306,5 +306,3 @@ var modal_init = function() {
       document.attachEvent("onkeydown", keyHandler);
     }
 };
-
-

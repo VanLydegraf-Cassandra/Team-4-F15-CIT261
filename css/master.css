@@ -209,7 +209,7 @@ footer .bar-wrapcopy {
     display: inline;
 }
 .breadcrumb li+li:before {
-    content:"Â» ";
+    content:"» ";
 }
 .current li{
     content: "...";
@@ -411,3 +411,8 @@ div#overlay {
   #modal_wrapper.overlay #modal_window {
     display: block;
   }
+  
+  
+#sightingButton{
+	padding: 20px 0px 10px;
+|
