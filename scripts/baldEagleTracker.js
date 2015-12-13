@@ -135,6 +135,14 @@ function getLocalTimestamp(){
     return currentISOTimestampString;
 }
 
+function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
 //load all the sightings onto the map
 function loadSightingsToMap(){
     var json;
@@ -173,6 +181,13 @@ function loadSightingsToMap(){
                     return function() {
                         infowindow.setContent(content);
                         infowindow.open(currentMap, marker);
+                        
+                        if (marker.getAnimation() !== null) {
+                            marker.setAnimation(null);
+                        } else {
+                            marker.setAnimation(google.maps.Animation.BOUNCE);
+                        }
+                        
                     };
                 })(marker,content));
                 
@@ -180,6 +195,8 @@ function loadSightingsToMap(){
         }
     }
 }
+
+
 
 //because the markers can't stay on top of each other otherwise they will not be seens
 //we need to apply a small offset to the location to allow them to be seen
@@ -215,7 +232,8 @@ function saveSighting(){
         position : currentPosition,
         icon : "/images/animals.png",
         map : currentMap,
-        zIndex : 255
+        animation : google.maps.Animation.BOUNCE,
+        zIndex : 999
     });
 }
 
@@ -267,6 +285,8 @@ var modal_init = function() {
 
     var modalWrapper = document.getElementById("modal_wrapper");
     var modalWindow  = document.getElementById("modal_window");
+    var removeSightingWrapper = document.getElementById("remove_sighting");
+    var removeSightingWindow = document.getElementById("remove_sighting_window");
 
     var openModal = function(e)
     {
@@ -283,10 +303,27 @@ var modal_init = function() {
       modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
+	
+    var removeSighting = function(e)
+    {
+        removeSightingWrapper.className = "overlay";
+        var overflow = removeSightingWindow.offsetHeight - document.documentElement.clientHeight;
+        if(overflow > 0) {
+            removeSightingWindow.style.maxHeight = (parseInt(window.getComputedStyle(removeSightingWindow).height) - overflow) + "px";
+        }
+        removeSightingWindow.style.marginTop = (-removeSightingWindow.offsetHeight)/2 + "px";
+        removeSightingWindow.style.marginLeft = (-removeSightingWindow.offsetWidth)/2 + "px";
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    };
+	
+    function saveThenClose(e)
+    {
+            saveSighting();
+            closeModal();
+    }
 
     var closeModal = function(e)
     {
-      saveSighting();
       modalWrapper.className = "";
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
@@ -296,13 +333,17 @@ var modal_init = function() {
     };
 
     if(document.addEventListener) {
-      document.getElementById("modal_open").addEventListener("click", openModal, false);
-      document.getElementById("btnSaveSighting").addEventListener("click", closeModal, false);
-      document.getElementById("btnSaveSighting").addEventListener("ontouchstart", closeModal, false);
-      document.addEventListener("keydown", keyHandler, false);
+        document.getElementById("modal_open").addEventListener("click", openModal, false);
+        //document.getElementById("modal_remove").addEventListener("click", removeSighting, false);
+        document.getElementById("btnSaveSighting").addEventListener("click", saveThenClose, false);
+        document.getElementById("btnSaveSighting").addEventListener("ontouchstart", saveThenClose, false);
+        document.getElementById("modal_close").addEventListener("click", closeModal, false);
+        document.addEventListener("keydown", keyHandler, false);
     } else {
-      document.getElementById("modal_open").attachEvent("onclick", openModal);
-      document.getElementById("btnSaveSighting").attachEvent("onclick", closeModal);
-      document.attachEvent("onkeydown", keyHandler);
+        document.getElementById("modal_open").attachEvent("onclick", openModal);
+	document.getElementById("modal_remove").attachEvent("onclick", removeSighting);
+        document.getElementById("btnSaveSighting").attachEvent("onclick", saveThenClose);
+	document.getElementById("modal_close").attachEvent("onclick", closeModal);
+        document.attachEvent("onkeydown", keyHandler);
     }
 };
