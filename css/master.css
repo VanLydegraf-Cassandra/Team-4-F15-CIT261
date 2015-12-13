@@ -209,7 +209,7 @@ footer .bar-wrapcopy {
     display: inline;
 }
 .breadcrumb li+li:before {
-    content:"» ";
+    content:"ï¿½ ";
 }
 .current li{
     content: "...";
@@ -415,4 +415,4 @@ div#overlay {
   
 #sightingButton{
 	padding: 20px 0px 10px;
-|
+}
