@@ -238,7 +238,7 @@ function saveSighting(){
         position : currentPosition,
         icon : "/images/animals.png",
         map : currentMap,
-        animation : google.maps.Animation.DROP,
+        animation : google.maps.Animation.BOUNCE,
         zIndex : 999,
         draggable : false,
         sighting : "Sighted: " + sWildlifeSighted,
