@@ -9,7 +9,7 @@
 <div id="header">
     <div class="logo" style="padding-left: 10px; padding-top: 8px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
-            <img src="../images/bald-eagle-logo-lg.png" alt=""/>
+            <img onload="this.style.opacity='1';" src="../images/bald-eagle-logo-lg.png" alt=""/>
         </a>
     </div>
     <div id="sightingButton">

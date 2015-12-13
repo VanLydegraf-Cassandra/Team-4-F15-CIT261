@@ -27,15 +27,16 @@ body{
     word-wrap:break-word !important;
     font-family: helvetica;
     font-size: 15px;
-    max-width: auto;
-    min-width: 640px;
-    background-color: #efe6ce;
+    max-width: 100%;
+    min-width: 320px;
+    padding: 0;
+    background-color: #fff;
     color: #000;
+    background-color: #efe6ce;
 }
 
 #header{
     background: url("/images/header_bg.png") repeat; 
-    //background-repeat: repeat-x;
     min-width: 720px;
 }
 
@@ -47,12 +48,6 @@ header, section, footer, aside, nav, article, figure, figcaption{
 #map { 
     height: 100%;
     width: 100%;
-    position: relative;
-    padding-bottom: 75%; // This is the aspect ratio
-    height: 0;
-    overflow: hidden;
-    max-width: 100%;
-    max-height: auto;
 }
 
 .center{
