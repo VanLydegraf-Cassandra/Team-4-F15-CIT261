@@ -17,7 +17,9 @@ var markersArray;
 window.addEventListener('load', function() {
     markersArray = new Array();
     modal_init();
-
+	setTimeout(function(){
+		document.getElementById("logoImage").className = "logoImageRight";
+		}, 4000);
     // getting current location by geocoder
     //var getGeoLocation = new google.maps.Geocoder();
     try{
@@ -316,8 +318,8 @@ var modal_init = function() {
 
     var modalWrapper = document.getElementById("modal_wrapper");
     var modalWindow  = document.getElementById("modal_window");
-    var removeSightingWrapper = document.getElementById("remove_sighting");
-    var removeSightingWindow = document.getElementById("remove_sighting_window");
+    var removeWrapper = document.getElementById("remove_wrapper");
+    var removeWindow = document.getElementById("remove_window");
 
     var openModal = function(e)
     {
@@ -335,23 +337,23 @@ var modal_init = function() {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
 	
-    var removeSighting = function(e)
+    function removeSighting(e)
     {
-        removeSightingWrapper.className = "overlay";
-        var overflow = removeSightingWindow.offsetHeight - document.documentElement.clientHeight;
+        removeWrapper.className = "overlay";
+        var overflow = removeWindow.offsetHeight - document.documentElement.clientHeight;
         if(overflow > 0) {
-            removeSightingWindow.style.maxHeight = (parseInt(window.getComputedStyle(removeSightingWindow).height) - overflow) + "px";
+            removeWindow.style.maxHeight = (parseInt(window.getComputedStyle(removeWindow).height) - overflow) + "px";
         }
-        removeSightingWindow.style.marginTop = (-removeSightingWindow.offsetHeight)/2 + "px";
-        removeSightingWindow.style.marginLeft = (-removeSightingWindow.offsetWidth)/2 + "px";
+        removeWindow.style.marginTop = (-removeWindow.offsetHeight)/2 + "px";
+        removeWindow.style.marginLeft = (-removeWindow.offsetWidth)/2 + "px";
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
     };
 	
-    function saveThenClose(e)
-    {
-            saveSighting();
-            closeModal();
-    }
+	function saveThenClose(e)
+	{
+		saveSighting();
+		closeModal();
+	}
 
     var closeModal = function(e)
     {
@@ -364,17 +366,22 @@ var modal_init = function() {
     };
 
     if(document.addEventListener) {
-        document.getElementById("modal_open").addEventListener("click", openModal, false);
-        //document.getElementById("modal_remove").addEventListener("click", removeSighting, false);
-        document.getElementById("btnSaveSighting").addEventListener("click", saveThenClose, false);
-        document.getElementById("btnSaveSighting").addEventListener("ontouchstart", saveThenClose, false);
-        document.getElementById("modal_close").addEventListener("click", closeModal, false);
-        document.addEventListener("keydown", keyHandler, false);
+      document.getElementById("modal_open").addEventListener("click", openModal, false);
+	  document.getElementById("btnSaveSighting").addEventListener("click", saveThenClose, false);
+      document.getElementById("btnSaveSighting").addEventListener("ontouchstart", saveThenClose, false);
+	  document.getElementById("modal_close").addEventListener("click", closeModal, false);
+      document.addEventListener("keydown", keyHandler, false);
     } else {
-        document.getElementById("modal_open").attachEvent("onclick", openModal);
-	document.getElementById("modal_remove").attachEvent("onclick", removeSighting);
-        document.getElementById("btnSaveSighting").attachEvent("onclick", saveThenClose);
-	document.getElementById("modal_close").attachEvent("onclick", closeModal);
-        document.attachEvent("onkeydown", keyHandler);
+      document.getElementById("modal_open").attachEvent("onclick", openModal);
+	  document.getElementById("btnSaveSighting").attachEvent("onclick", saveThenClose);
+	  document.getElementById("modal_close").attachEvent("onclick", closeModal);
+      document.attachEvent("onkeydown", keyHandler);
     }
+		
+    function setTransition() {
+            document.getElementById("transition").style.WebkitTransform = "translateX(90%)";
+            document.getElementById("transition").style.transition = "all 2s"; 
+            document.getElementById("transition").style.transition = "all 6s"; 
+    }
+
 };
