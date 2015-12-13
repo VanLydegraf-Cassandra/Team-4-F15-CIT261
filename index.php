@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>Eagle Sighting Tracker | CIT-261 Team 4</title>
         <meta name="author" content="Eurico Costa">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1"/>
         <meta name="description" content="This website provides a high level overview of my understanding of the topics learned in CIT-261 Fall Semester 2015.">
         
         <link rel="stylesheet" type="text/css" media="screen" href="css/master.css" />
@@ -50,7 +50,7 @@
             </div> <!-- #modal_window -->
         </div> 
         <!-- #modal_wrapper -->
-        <div id="map" style="padding: 10px"></div>
+        <div id="map"></div>
         <div id="display" onclick="setTransition(true)">
             <span id="description"></span>
             <span id="date"></span>
