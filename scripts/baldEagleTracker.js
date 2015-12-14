@@ -15,6 +15,7 @@ var markersArray;
 /*********************************/
 
 window.addEventListener('load', function() {
+    setLogoTransition();
     markersArray = new Array();
     modal_init();
 	setTimeout(function(){
@@ -379,9 +380,17 @@ var modal_init = function() {
     }
 		
     function setTransition() {
-            document.getElementById("transition").style.WebkitTransform = "translateX(90%)";
+            document.getElementById("transition").style.WebkitTransform = "translateX(1000px)";
             document.getElementById("transition").style.transition = "all 2s"; 
             document.getElementById("transition").style.transition = "all 6s"; 
     }
+	
+	
 
 };
+
+function setLogoTransition() {
+        document.getElementById("transition").style.WebkitTransform = "translateX(500px)";
+        document.getElementById("transition").style.transition = "all 2s"; 
+        document.getElementById("transition").style.transition = "all 6s"; 
+}

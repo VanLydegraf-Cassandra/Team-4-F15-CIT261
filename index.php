@@ -14,8 +14,10 @@
             <header role="banner" id="page-header"> <!-- ARIA roles -->
                     <?php include $_SERVER['DOCUMENT_ROOT'].'/modules/header.php'; ?>
 					<div id="saveMessage">&nbsp;</div>
+
             </header>
         </div>
+		
         <!-- #modal_wrapper -->
 
         <div id="modal_wrapper">

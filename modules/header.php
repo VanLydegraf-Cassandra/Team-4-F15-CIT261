@@ -9,17 +9,10 @@
 <div id="header">
     <div class="logo" style="padding-left: 10px; padding-top: 8px">
         <a href="/" title="Eagle Sighting Tracker Home Page.">
-            <img id="transition" onload="this.style.opacity='1';setTransition();" src="../images/bald-eagle-logo-lg.png" alt=""/>
-            <script>
-                function setTransition() {
-                    document.getElementById("transition").style.WebkitTransform = "translateX(-2000px)";
-                    document.getElementById("transition").style.transition = "all 2s"; 
-    
-                    document.getElementById("transition").style.transition = "all 6s"; 
-                }
-            </script>
+            <img id="transition" onload="this.style.opacity='1'; setTransition();" src="../images/bald-eagle-logo-lg.png" alt=""/>
         </a>
     </div>
+
     <div id="sightingButton">
         <button class="btn btn-6 btn-6b" id="modal_open">Record a New Sighting</button>
     </div>
